@@ -15,7 +15,7 @@ order=['ALU','Cache','Control Unit','Register File','Decoder','Floating Unit']
 interconnections=[(3,0),(2,0),(0,1),(3,5),(1,4),(4,5)]
 
 populationMax=100
-generationTime=50
+generationTime=15
 mutationRate=0.10
 elitismCount=2
 
@@ -161,6 +161,7 @@ def geneticAlgorithm():
     population=[Chromosome() for _ in range(populationMax)]
     result= None
     print("----Started----")
+    print()
     
     for gen in range(generationTime):
         for ind in population:
@@ -176,18 +177,20 @@ def geneticAlgorithm():
     
         while len(new_population)<populationMax:
             parentA, parentB = parents(population)
-            childA,childB= crossover(parentA,parentB)
-        
+            childA,childB= crossover(parentA,parentB) # for single point crossover
+            #childA,childB= crossover(parentA,parentB) # for double point crossover
             mutatedA=mutation(childA)
             mutatedB=mutation(childB)
         
             new_population.extend([mutatedA,mutatedB])
         population=new_population
-        print(f"generation: {gen+1}/{generationTime}, Best fitness: {result.fitness:.2f}")
+        print(f"-> generation: {gen+1}/{generationTime}, Best fitness: {result.fitness:.2f}")
     
     overlap,wire,area= fitness(result)
-    print("Finished")
-    print("found - ")
+    print()
+    print("----Finished----")
+    print()
+    print(" --- found --- ")
     print(f" -- Total Fitness: {result.fitness:.2f}")
     print(f" -- Overlap count: {overlap}, penalty: {overlap*overlapCost}")
     print(f" -- Wire length: {wire}, penalty: {wire*wireCost}")
@@ -198,7 +201,7 @@ def geneticAlgorithm():
         name=order[i]
         x= result.cordinates[i*2]
         y=result.cordinates[i*2 +1]
-        print(f"   ==  {name}: ({x}, {y})")
+        print(f"   ==>  {name}: ({x}, {y})")
 
 if __name__=="__main__":
     geneticAlgorithm()
