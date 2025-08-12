@@ -45,7 +45,8 @@ def admissibilityCheck(graph, end, hue):
         cost=hue[node]
         real_cost = uno_cost[node]
         if cost>real_cost:
-            return 0
+            #return 0
+            inadmissible.append(node)
     if len(inadmissible) == 0:
         print(1)
     else:
